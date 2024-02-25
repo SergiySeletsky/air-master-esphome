@@ -20,7 +20,7 @@ class AirMasterSensor : public PollingComponent, public UARTDevice {
 
   Output *led_output;
 
-  AirMasterSensor(UARTComponent *parent, Output *led_output) : UARTDevice(parent), led_output(led_output) {}
+  AirMasterSensor(UARTComponent *parent, Output *led_output) : UARTDevice(parent), led_output(led_output) {
 
   void setup() override {}
 
