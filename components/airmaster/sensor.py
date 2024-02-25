@@ -39,12 +39,12 @@ SENSOR_TYPES = {
 # Generate sensor configurations
 def get_sensor_configs():
     sensor_configs = vol.Schema({
-        vol.Optional(sensor_name): cv.nameable(sensor.SENSOR_SCHEMA.extend({
+        vol.Optional(sensor_name): sensor.SENSOR_SCHEMA.extend({
             vol.Optional('unit_of_measurement'): cv.string,
             vol.Optional('icon'): cv.icon,
             vol.Optional('accuracy_decimals'): cv.int,
             vol.Optional('device_class'): cv.string,
-        })) for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items()
+        }) for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items()
     })
     return sensor_configs
 
