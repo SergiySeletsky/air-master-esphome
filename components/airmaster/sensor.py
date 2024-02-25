@@ -30,14 +30,14 @@ SENSOR_TYPES = {
     'ppm10_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, None],
 }
 
-def create_sensor_schema(sensor_types):
-    sensor_schema = {}
-    for sensor_name, (unit, icon, accuracy, device_class) in sensor_types.items():
-        sensor_schema[vol.Optional(sensor_name)] = sensor.sensor_schema(
-            unit_of_measurement=unit,
-            icon=icon,
-            accuracy_decimals=accuracy,
-            device_class=device_class,
-            is_required=False,
-        )
-    return sensor_schema
+def get_sensor_configs():
+    sensor_configs = {}
+    for sensor_name, details in SENSOR_TYPES.items():
+        unit, icon, decimals, device_class = details
+        sensor_configs[sensor_name] = {
+            'unit_of_measurement': unit,
+            'icon': icon,
+            'accuracy_decimals': decimals,
+            'device_class': device_class,
+        }
+    return sensor_configs
