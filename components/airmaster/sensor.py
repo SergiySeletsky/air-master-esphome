@@ -12,6 +12,7 @@ from esphome.const import (
     UNIT_CELSIUS,
     UNIT_PERCENT,
     ICON_THERMOMETER,
+    ICON_WATER_PERCENT,
 )
 
 # Configuration for each sensor type
