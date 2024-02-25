@@ -4,19 +4,6 @@ from esphome import core
 from esphome.components import sensor, uart, output
 from esphome.const import (
     CONF_ID,
-    UNIT_PARTS_PER_MILLION,
-    UNIT_CELSIUS,
-    UNIT_PERCENT,
-    ICON_THERMOMETER,
-    ICON_WATER_PERCENT,
-    ICON_GAUGE,
-    DEVICE_CLASS_TEMPERATURE,
-    DEVICE_CLASS_HUMIDITY,
-    DEVICE_CLASS_PM25,
-    CONF_SENSORS,
-    CONF_UNIT_OF_MEASUREMENT,
-    CONF_ICON,
-    CONF_ACCURACY_DECIMALS
 )
 
 DEPENDENCIES = ['uart']

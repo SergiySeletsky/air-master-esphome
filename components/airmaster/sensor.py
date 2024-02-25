@@ -3,6 +3,7 @@ from esphome.components import sensor
 from esphome.core import coroutine
 from . import AirMasterSensor, airmaster_ns
 from esphome.const import (
+    CONF_ID,
     UNIT_MICROGRAMS_PER_CUBIC_METER,
     ICON_GAUGE,
     DEVICE_CLASS_PM25,
