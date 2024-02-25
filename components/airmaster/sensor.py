@@ -34,8 +34,6 @@ SENSOR_TYPES = {
     'ppm10_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, None],
 }
 
-CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor)
-
 # Dynamically extend the schema with sensor configurations
 for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items():
     CONFIG_SCHEMA.extend({
