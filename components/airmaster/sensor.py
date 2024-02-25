@@ -39,6 +39,5 @@ def get_sensor_configs():
             icon=icon,
             accuracy_decimals=decimals,
             device_class=device_class,
-            is_required=False,
         )
     return sensor_configs
