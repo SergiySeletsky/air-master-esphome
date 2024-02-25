@@ -49,7 +49,7 @@ external_components:
 sensor:
   - platform: custom
     lambda: |-
-      auto air_master_sensor = new AirMasterSensor(id(uart_bus), id(led_gpio));
+      auto air_master_sensor = new esphome::airmaster::AirMasterSensor(id(uart_bus), id(led_gpio));
       App.register_component(air_master_sensor);
       return {air_master_sensor->pm25_sensor, air_master_sensor->pm10_sensor, air_master_sensor->hcho_sensor, air_master_sensor->tvoc_sensor, air_master_sensor->co2_sensor, air_master_sensor->temperature_sensor, air_master_sensor->humidity_sensor, air_master_sensor->ppm03_sensor, air_master_sensor->ppm05_sensor, air_master_sensor->ppm1_sensor, air_master_sensor->ppm2_sensor, air_master_sensor->ppm5_sensor, air_master_sensor->ppm10_sensor};
     sensors:

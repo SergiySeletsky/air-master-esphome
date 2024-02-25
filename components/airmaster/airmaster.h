@@ -1,6 +1,9 @@
-#include "esphome.h"
-#include "uart.h"
+#include "esphome/core/component.h"
+#include "esphome/components/sensor/sensor.h"
+#include "esphome/components/uart/uart.h"
 
+namespace esphome {
+namespace airmaster {
 class AirMasterSensor : public PollingComponent, public UARTDevice {
  public:
   Sensor *pm25_sensor = new Sensor();
@@ -20,7 +23,7 @@ class AirMasterSensor : public PollingComponent, public UARTDevice {
 
   Output *led_output;
 
-  AirMasterSensor(UARTComponent *parent, Output *led_output) : UARTDevice(parent), led_output(led_output) {
+  AirMasterSensor(UARTComponent *parent, Output *led_output) : UARTDevice(parent), led_output(led_output) {}
 
   void setup() override {}
 
@@ -78,3 +81,5 @@ class AirMasterSensor : public PollingComponent, public UARTDevice {
     }
   }
 };
+}
+}
