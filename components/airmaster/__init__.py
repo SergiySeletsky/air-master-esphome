@@ -1,6 +1,6 @@
 import esphome.codegen as cg
 from esphome import core
-from esphome.components import sensor, uart
+from esphome.components import sensor, uart, output
 from esphome.const import (
     CONF_ID,
     UNIT_PARTS_PER_MILLION,
