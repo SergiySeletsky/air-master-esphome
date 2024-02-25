@@ -1,7 +1,6 @@
 import esphome.codegen as cg
 import voluptuous as vol
 from esphome import core
-from esphome.helpers import cv
 from esphome.components import sensor, uart, output
 from esphome.const import (
     CONF_ID,
@@ -45,7 +44,7 @@ SENSOR_TYPES = {
 }
 
 LED_OUTPUT_SCHEMA = vol.Schema({
-    vol.Required(CONF_ID): cv.declare_variable_id(output.Output),
+    vol.Required(CONF_ID): core.declare_variable_id(output.Output),
 })
 
 CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor)
