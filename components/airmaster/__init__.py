@@ -18,7 +18,6 @@ from esphome.const import (
     CONF_UNIT_OF_MEASUREMENT,
     CONF_ICON,
     CONF_ACCURACY_DECIMALS,
-    CONF_UPDATE_INTERVAL,
 )
 
 DEPENDENCIES = ['uart']
@@ -30,7 +29,6 @@ AirMasterSensor = airmaster_ns.class_('AirMasterSensor', cg.PollingComponent, ua
 LED_OUTPUT = output.output_ns.class_('Output')
 
 CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor).extend({
-    vol.Optional(CONF_UPDATE_INTERVAL): cv.update_interval,
     vol.Optional("led_output"): cv.use_id(output.OutputComponent),
     # Additional sensor configuration schema extensions
 }).extend(cv.COMPONENT_SCHEMA)
