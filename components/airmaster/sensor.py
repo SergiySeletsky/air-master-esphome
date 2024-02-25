@@ -34,10 +34,11 @@ def get_sensor_configs():
     sensor_configs = {}
     for sensor_name, details in SENSOR_TYPES.items():
         unit, icon, decimals, device_class = details
-        sensor_configs[sensor_name] = {
-            'unit_of_measurement': unit,
-            'icon': icon,
-            'accuracy_decimals': decimals,
-            'device_class': device_class,
-        }
+        sensor_configs[vol.Optional(sensor_name)] = sensor.sensor_schema(
+            unit_of_measurement=unit,
+            icon=icon,
+            accuracy_decimals=decimals,
+            device_class=device_class,
+            is_required=False,
+        )
     return sensor_configs
