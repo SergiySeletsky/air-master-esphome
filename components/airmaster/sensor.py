@@ -10,7 +10,8 @@ from esphome.const import (
     DEVICE_CLASS_HUMIDITY, 
     UNIT_PARTS_PER_MILLION,
     UNIT_CELSIUS,
-    UNIT_PERCENT, 
+    UNIT_PERCENT,
+    ICON_THERMOMETER,
 )
 
 # Configuration for each sensor type
