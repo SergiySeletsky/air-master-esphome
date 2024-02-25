@@ -44,7 +44,7 @@ SENSOR_TYPES = {
 
 CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor).extend({
     # Dynamically create the configuration schema based on SENSOR_TYPES
-    cg.Optional(sensor_name): sensor.sensor_schema(unit_of_measurement=unit,
+    vol.Optional(sensor_name): sensor.sensor_schema(unit_of_measurement=unit,
                                                    icon=icon,
                                                    accuracy_decimals=decimals,
                                                    device_class=device_class)
