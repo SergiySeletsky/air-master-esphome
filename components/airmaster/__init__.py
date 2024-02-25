@@ -19,11 +19,9 @@ LED_OUTPUT_SCHEMA = vol.Schema({
     vol.Required(CONF_ID): core.ID,
 })
 
-CONFIG_SCHEMA = cv.Schema(
-        {
-            cv.GenerateID(): cv.declare_id(AirMasterSensor),
-        }
-    ).extend({
+CONFIG_SCHEMA = cv.Schema({ 
+    cv.GenerateID(): cv.declare_id(AirMasterSensor), 
+}).extend({
     vol.Optional(CONF_UPDATE_INTERVAL): cv.update_interval,
     vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
 }).extend(sensor_configs).extend(uart.UART_DEVICE_SCHEMA)
