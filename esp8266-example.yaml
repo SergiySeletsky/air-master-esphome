@@ -75,4 +75,3 @@ sensor:
       name: "PPM5.0"
     ppm10_sensor:
       name: "PPM10"
-    update_interval: 60s
