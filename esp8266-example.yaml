@@ -37,7 +37,7 @@ uart:
 output:
   - platform: gpio
     pin: D4  # GPIO2 (often used for onboard LEDs)
-    id: led_gpio
+    id: led_output
 
 external_components:
   - source:
