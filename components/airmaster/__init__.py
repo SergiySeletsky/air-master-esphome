@@ -43,16 +43,30 @@ SENSOR_TYPES = {
     'ppm10_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, None],
 }
 
-CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor).extend({
-    # Dynamically create the configuration schema based on SENSOR_TYPES
-    vol.Optional(sensor_name): sensor.sensor_schema(unit_of_measurement=unit,
-                                                   icon=icon,
-                                                   accuracy_decimals=decimals,
-                                                   device_class=device_class)
-    for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items()
-}).extend({
-    vol.Optional("led_output"): output.output_schema(),
-}).extend(uart.UART_DEVICE_SCHEMA).extend(core.COMPONENT_SCHEMA)
+LED_OUTPUT_SCHEMA = vol.Schema({
+    vol.Required(CONF_ID): cv.declare_variable_id(output.Output),
+})
+
+CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor)
+
+# Dynamically extend the schema with sensor configurations
+for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items():
+    CONFIG_SCHEMA.extend({
+        vol.Optional(sensor_name): sensor.sensor_schema(
+            unit_of_measurement=unit,
+            icon=icon,
+            accuracy_decimals=decimals,
+            device_class=device_class
+        )
+    })
+
+# Extend the schema with LED output configuration
+CONFIG_SCHEMA.extend({
+    vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
+})
+
+# Extend the schema with UART device configuration
+CONFIG_SCHEMA.extend(uart.UART_DEVICE_SCHEMA)
 
 def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
