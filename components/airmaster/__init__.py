@@ -28,8 +28,12 @@ AirMasterSensor = airmaster_ns.class_('AirMasterSensor', cg.PollingComponent, ua
 
 LED_OUTPUT = output.output_ns.class_('Output')
 
+LED_OUTPUT_SCHEMA = vol.Schema({
+    vol.Required(CONF_ID): core.ID,
+})
+
 CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor).extend({
-    vol.Optional("led_output"): cv.use_id(output.OutputComponent),
+    vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
     # Additional sensor configuration schema extensions
 }).extend(cv.COMPONENT_SCHEMA)
 
