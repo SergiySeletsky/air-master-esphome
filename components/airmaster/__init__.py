@@ -43,10 +43,6 @@ SENSOR_TYPES = {
     'ppm10_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, None],
 }
 
-LED_OUTPUT_SCHEMA = vol.Schema({
-    vol.Required(CONF_ID): core.declare_variable_id(output.Output),
-})
-
 CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor)
 
 # Dynamically extend the schema with sensor configurations
@@ -62,7 +58,7 @@ for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items():
 
 # Extend the schema with LED output configuration
 CONFIG_SCHEMA.extend({
-    vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
+    vol.Optional("led_output"): output.output_schema(id_type=output.Output),
 })
 
 # Extend the schema with UART device configuration
