@@ -1,4 +1,5 @@
 import esphome.codegen as cg
+import voluptuous as vol
 from esphome.components import sensor
 from esphome.core import coroutine
 from . import AirMasterSensor, airmaster_ns
