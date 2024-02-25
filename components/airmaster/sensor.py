@@ -2,6 +2,16 @@ import esphome.codegen as cg
 from esphome.components import sensor
 from esphome.core import coroutine
 from . import AirMasterSensor, airmaster_ns
+from esphome.const import (
+    UNIT_MICROGRAMS_PER_CUBIC_METER,
+    ICON_GAUGE,
+    DEVICE_CLASS_PM25,
+    DEVICE_CLASS_TEMPERATURE,
+    DEVICE_CLASS_HUMIDITY, 
+    UNIT_PARTS_PER_MILLION,
+    UNIT_CELSIUS,
+    UNIT_PERCENT, 
+)
 
 # Configuration for each sensor type
 SENSOR_TYPES = {
