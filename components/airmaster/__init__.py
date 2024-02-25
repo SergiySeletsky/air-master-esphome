@@ -56,9 +56,13 @@ for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items():
         )
     })
 
+LED_OUTPUT_SCHEMA = vol.Schema({
+    vol.Required(CONF_ID): core.ID,
+})
+
 # Extend the schema with LED output configuration
 CONFIG_SCHEMA.extend({
-    vol.Optional("led_output"): output.output_schema(id_type=output.Output),
+    vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
 })
 
 # Extend the schema with UART device configuration
