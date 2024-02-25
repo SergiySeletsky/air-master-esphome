@@ -18,10 +18,11 @@ from esphome.const import (
     CONF_UNIT_OF_MEASUREMENT,
     CONF_ICON,
     CONF_ACCURACY_DECIMALS,
+    CONF_OUTPUT_ID,
 )
 
 DEPENDENCIES = ['uart']
-AUTO_LOAD = ['sensor']
+AUTO_LOAD = ['sensor', 'output']
 
 airmaster_ns = cg.esphome_ns.namespace('airmaster')
 AirMasterSensor = airmaster_ns.class_('AirMasterSensor', cg.PollingComponent, uart.UARTDevice)
@@ -50,6 +51,8 @@ CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor).extend({
                                                    accuracy_decimals=decimals,
                                                    device_class=device_class)
     for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items()
+}).extend({
+    vol.Optional(CONF_OUTPUT_ID): cv.use_id(output.Output),
 }).extend(uart.UART_DEVICE_SCHEMA).extend(core.COMPONENT_SCHEMA)
 
 def to_code(config):
@@ -62,3 +65,7 @@ def to_code(config):
             conf = config[sensor_name]
             sens = yield sensor.new_sensor(conf)
             cg.add(getattr(var, f'set_{sensor_name}')(sens))
+    
+    if CONF_OUTPUT_ID in config:
+        led = yield cg.get_variable(config[CONF_OUTPUT_ID])
+        cg.add(var.set_led_output(led))
