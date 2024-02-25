@@ -35,7 +35,7 @@ LED_OUTPUT_SCHEMA = vol.Schema({
 CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor).extend({
     vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
     # Additional sensor configuration schema extensions
-}).extend(cv.COMPONENT_SCHEMA)
+}).extend(uart.UART_DEVICE_SCHEMA)
 
 def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
