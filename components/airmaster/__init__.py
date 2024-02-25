@@ -18,6 +18,7 @@ from esphome.const import (
     CONF_UNIT_OF_MEASUREMENT,
     CONF_ICON,
     CONF_ACCURACY_DECIMALS,
+    CONF_UPDATE_INTERVAL,
 )
 
 DEPENDENCIES = ['uart']
