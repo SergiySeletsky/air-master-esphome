@@ -45,63 +45,34 @@ external_components:
       url: https://github.com/SergiySeletsky/air-master-am7-esphome
       ref: main
     components: [airmaster]
+    refresh: 60s
 
 sensor:
-  - platform: custom
-    lambda: |-
-      auto air_master_sensor = new esphome::airmaster::AirMasterSensor(id(uart_bus), id(led_gpio));
-      App.register_component(air_master_sensor);
-      return {air_master_sensor->pm25_sensor, air_master_sensor->pm10_sensor, air_master_sensor->hcho_sensor, air_master_sensor->tvoc_sensor, air_master_sensor->co2_sensor, air_master_sensor->temperature_sensor, air_master_sensor->humidity_sensor, air_master_sensor->ppm03_sensor, air_master_sensor->ppm05_sensor, air_master_sensor->ppm1_sensor, air_master_sensor->ppm2_sensor, air_master_sensor->ppm5_sensor, air_master_sensor->ppm10_sensor};
-    sensors:
-    - name: "PM2.5"
-      unit_of_measurement: "µg/m³"
-      accuracy_decimals: 2
-      id: pm25_sensor
-    - name: "PM10"
-      unit_of_measurement: "µg/m³"
-      accuracy_decimals: 2
-      id: pm10_sensor
-    - name: "HCHO"
-      unit_of_measurement: "µg/m³"
-      accuracy_decimals: 2
-      id: hcho_sensor
-    - name: "TVOC"
-      unit_of_measurement: "µg/m³"
-      accuracy_decimals: 2
-      id: tvoc_sensor
-    - name: "CO2"
-      unit_of_measurement: "ppm"
-      accuracy_decimals: 2
-      id: co2_sensor
-    - name: "Temperature"
-      unit_of_measurement: "°C"
-      accuracy_decimals: 2
-      id: temperature_sensor
-    - name: "Humidity"
-      unit_of_measurement: "%"
-      accuracy_decimals: 2
-      id: humidity_sensor
-    - name: "PPM0.3"
-      unit_of_measurement: "ppm"
-      accuracy_decimals: 0
-      id: ppm03_sensor
-    - name: "PPM0.5"
-      unit_of_measurement: "ppm"
-      accuracy_decimals: 0
-      id: ppm05_sensor
-    - name: "PPM1.0"
-      unit_of_measurement: "ppm"
-      accuracy_decimals: 0
-      id: ppm1_sensor
-    - name: "PPM2.5"
-      unit_of_measurement: "ppm"
-      accuracy_decimals: 0
-      id: ppm2_sensor
-    - name: "PPM5.0"
-      unit_of_measurement: "ppm"
-      accuracy_decimals: 0
-      id: ppm5_sensor
-    - name: "PPM10"
-      unit_of_measurement: "ppm"
-      accuracy_decimals: 0
-      id: ppm10_sensor
+  - platform: airmaster
+    pm25_sensor:
+      name: "PM2.5"
+    pm10_sensor:
+      name: "PM10"
+    hcho_sensor:
+      name: "HCHO"
+    tvoc_sensor:
+      name: "TVOC"
+    co2_sensor:
+      name: "CO2"
+    temperature_sensor:
+      name: "Temperature"
+    humidity_sensor:
+      name: "Humidity"
+    ppm03_sensor:
+      name: "PPM0.3"
+    ppm05_sensor:
+      name: "PPM0.5"
+    ppm1_sensor:
+      name: "PPM1.0"
+    ppm2_sensor:
+      name: "PPM2.5"
+    ppm5_sensor:
+      name: "PPM5.0"
+    ppm10_sensor:
+      name: "PPM10"
+    update_interval: 60s
