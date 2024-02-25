@@ -1,4 +1,5 @@
 import esphome.codegen as cg
+import voluptuous as vol
 from esphome import core
 from esphome.components import sensor, uart, output
 from esphome.const import (
