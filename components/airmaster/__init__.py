@@ -15,7 +15,11 @@ AirMasterSensor = airmaster_ns.class_('AirMasterSensor', cg.PollingComponent, ua
 
 sensor_configs = get_sensor_configs()
 
-CONFIG_SCHEMA = sensor.sensor_schema(AirMasterSensor).extend({
+CONFIG_SCHEMA = cv.Schema(
+        {
+            cv.GenerateID(): cv.declare_id(AirMasterSensor),
+        }
+    ).extend({
     vol.Optional(CONF_UPDATE_INTERVAL): cv.update_interval,
     vol.Optional("led_output"): cv.use_id(output.OutputComponent),
 }).extend(sensor_configs).extend(cv.COMPONENT_SCHEMA)
