@@ -26,9 +26,7 @@ CONFIG_SCHEMA = cv.Schema(
     ).extend({
     vol.Optional(CONF_UPDATE_INTERVAL): cv.update_interval,
     vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
-}).extend(sensor_configs)
-  .extend(cv.polling_component_schema("60s"))
-  .extend(uart.UART_DEVICE_SCHEMA)
+}).extend(sensor_configs).extend(uart.UART_DEVICE_SCHEMA)
 
 def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
