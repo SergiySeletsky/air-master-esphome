@@ -50,15 +50,6 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
   void set_ppm2_sensor(sensor::Sensor *ppm2_sensor) { this->ppm2_sensor = ppm2_sensor; }
   void set_ppm5_sensor(sensor::Sensor *ppm5_sensor) { this->ppm5_sensor = ppm5_sensor; }
   void set_ppm10_sensor(sensor::Sensor *ppm10_sensor) { this->ppm10_sensor = ppm10_sensor; }
-
-  void setup() override {
-    // Initialization code here
-  }
-
-  void update() override {
-    // This method should read data from the UART, parse it, and update the sensor values.
-    // Placeholder for reading and parsing logic
-  }
 };
 
 }  // namespace airmaster
