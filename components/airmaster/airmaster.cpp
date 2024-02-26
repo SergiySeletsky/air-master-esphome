@@ -38,20 +38,20 @@ namespace esphome
         if (received_checksum == calculated_checksum)
         {
           // Process and publish sensor data
-          pm25_sensor->publish_state(buffer[2] | buffer[1] << 8);
-          pm10_sensor->publish_state(buffer[4] | buffer[3] << 8);
-          hcho_sensor->publish_state(buffer[6] | buffer[5] << 8);
-          tvoc_sensor->publish_state(buffer[8] | buffer[7] << 8);
-          co2_sensor->publish_state(buffer[10] | buffer[9] << 8);
-          temperature_sensor->publish_state((buffer[12] | buffer[11] << 8) / 100.0);
-          humidity_sensor->publish_state((buffer[14] | buffer[13] << 8) / 100.0);
+          pm25_sensor->publish_state(response[2] | response[1] << 8);
+          pm10_sensor->publish_state(response[4] | response[3] << 8);
+          hcho_sensor->publish_state(response[6] | response[5] << 8);
+          tvoc_sensor->publish_state(response[8] | response[7] << 8);
+          co2_sensor->publish_state(response[10] | response[9] << 8);
+          temperature_sensor->publish_state((response[12] | response[11] << 8) / 100.0);
+          humidity_sensor->publish_state((response[14] | response[13] << 8) / 100.0);
 
-          ppm03_sensor->publish_state(buffer[20] | buffer[19] << 8);
-          ppm05_sensor->publish_state(buffer[22] | buffer[21] << 8);
-          ppm1_sensor->publish_state(buffer[24] | buffer[23] << 8);
-          ppm25_sensor->publish_state(buffer[26] | buffer[25] << 8);
-          ppm5_sensor->publish_state(buffer[28] | buffer[27] << 8);
-          ppm10_sensor->publish_state(buffer[30] | buffer[29] << 8);
+          ppm03_sensor->publish_state(response[20] | response[19] << 8);
+          ppm05_sensor->publish_state(response[22] | response[21] << 8);
+          ppm1_sensor->publish_state(response[24] | response[23] << 8);
+          ppm25_sensor->publish_state(response[26] | response[25] << 8);
+          ppm5_sensor->publish_state(response[28] | response[27] << 8);
+          ppm10_sensor->publish_state(response[30] | response[29] << 8);
         }
         else
         {
