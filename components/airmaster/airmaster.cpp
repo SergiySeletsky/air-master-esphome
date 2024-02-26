@@ -44,9 +44,6 @@ void AirMasterSensor::update() {
                  ((buffer[12] << 8) | buffer[11]) / 100.0, ((buffer[14] << 8) | buffer[13]) / 100.0, (buffer[20] << 8) | buffer[19], (buffer[22] << 8) | buffer[21],
                  (buffer[24] << 8) | buffer[23], (buffer[26] << 8) | buffer[25], (buffer[28] << 8) | buffer[27], (buffer[30] << 8) | buffer[29]);
                  
-        // LED feedback for valid data
-        led_output->turn_on();
-        set_timeout(5000, [this]() { this->led_output->turn_off(); });
       } else {
         ESP_LOGD("air_master", "Reading data...");
       }

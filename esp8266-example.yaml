@@ -34,11 +34,6 @@ uart:
   rx_pin: D7  # GPIO13
   baud_rate: 19200
 
-output:
-  - platform: gpio
-    pin: D4  # GPIO2 (often used for onboard LEDs)
-    id: led_output
-
 external_components:
   - source:
       type: git

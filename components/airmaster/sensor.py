@@ -2,7 +2,7 @@ import esphome.codegen as cg
 import voluptuous as vol
 from esphome import core
 import esphome.config_validation as cv
-from esphome.components import sensor, uart, output
+from esphome.components import sensor, uart
 from esphome.const import (
     CONF_ID, CONF_SENSORS, CONF_UPDATE_INTERVAL,
     UNIT_MICROGRAMS_PER_CUBIC_METER, ICON_GAUGE, DEVICE_CLASS_PM25,
@@ -15,14 +15,9 @@ from esphome.const import (
 )
 
 DEPENDENCIES = ['uart']
-AUTO_LOAD = ['sensor', 'output']
 
 airmaster_ns = cg.esphome_ns.namespace('airmaster')
 AirMasterSensor = airmaster_ns.class_('AirMasterSensor', cg.PollingComponent, uart.UARTDevice)
-
-LED_OUTPUT_SCHEMA = vol.Schema({
-    vol.Required(CONF_ID): core.ID,
-})
 
 CONFIG_SCHEMA = cv.All(
     cv.Schema(
@@ -118,16 +113,9 @@ CONFIG_SCHEMA = cv.All(
         }
     )
     .extend(cv.polling_component_schema("60s"))
-    .extend({
-        vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
-    })
     .extend(uart.UART_DEVICE_SCHEMA))
 
 def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
     yield cg.register_component(var, config)
     yield uart.register_uart_device(var, config)
-    
-    if "led_output" in config:
-        led = yield cg.get_variable(config["led_output"])
-        cg.add(var.set_led_output(led))

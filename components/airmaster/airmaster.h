@@ -8,7 +8,7 @@
 namespace esphome {
 namespace airmaster {
 
-class AirMasterSensor : public PollingComponent, public uart::UARTDevice, public output::BinaryOutput {
+class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
  public:
 
   // Sensor pointers
@@ -25,9 +25,6 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice, public
   sensor::Sensor *ppm2_sensor{nullptr};
   sensor::Sensor *ppm5_sensor{nullptr};
   sensor::Sensor *ppm10_sensor{nullptr};
-
-  // Output for LED indicator
-  output::BinaryOutput *led_output;
 
   // Component overrides
   void update() override;
@@ -46,15 +43,7 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice, public
   void set_ppm2_sensor(sensor::Sensor *ppm2_sensor) { this->ppm2_sensor = ppm2_sensor; }
   void set_ppm5_sensor(sensor::Sensor *ppm5_sensor) { this->ppm5_sensor = ppm5_sensor; }
   void set_ppm10_sensor(sensor::Sensor *ppm10_sensor) { this->ppm10_sensor = ppm10_sensor; }
-
-  protected:
-  void write_state(bool state) override { 
-    if (state) {
-      this->led_output->turn_on();
-    } else {
-      this->led_output->turn_off();
-    }
-  }
+  
 };
 
 }  // namespace airmaster
