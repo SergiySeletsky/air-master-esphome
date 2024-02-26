@@ -8,9 +8,8 @@ static const uint8_t AIRMASTER_RESPONSE_LENGTH = 40;
 
 void AirMasterSensor::update() {
   uint8_t response[AIRMASTER_RESPONSE_LENGTH];
-  uint8_t peeked;
 
-  while (this->available() > 0 && this->peek_byte(&peeked))
+  while (this->available() > 0)
     this->read();
 
   bool read_success = read_array(response, AIRMASTER_RESPONSE_LENGTH);
