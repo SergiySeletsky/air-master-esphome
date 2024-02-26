@@ -5,7 +5,7 @@ namespace airmaster {
 
 void AirMasterSensor::update() {
   const uint8_t command[] = {0x55, 0xCD, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x69, 0x0D, 0x0A};
-  this->write_array(command, sizeof(command));
+  this->write_array(command, 13);
 
   if (this->available() >= 40) {
     uint8_t buffer[40];
