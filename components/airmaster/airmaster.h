@@ -8,7 +8,7 @@
 namespace esphome {
 namespace airmaster {
 
-class AirMasterSensor : public PollingComponent, public uart::UARTDevice, output::BinaryOutput {
+class AirMasterSensor : public PollingComponent, public uart::UARTDevice, public output::BinaryOutput {
  public:
 
   // Sensor pointers
