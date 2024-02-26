@@ -48,7 +48,13 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice, public
   void set_ppm10_sensor(sensor::Sensor *ppm10_sensor) { this->ppm10_sensor = ppm10_sensor; }
 
   protected:
-  void write_state(bool state) override { this->led_output->digital_write(state); }
+  void write_state(bool state) override { 
+    if (state) {
+      this->led_output->turn_on();
+    } else {
+      this->led_output->turn_off();
+    }
+  }
 };
 
 }  // namespace airmaster
