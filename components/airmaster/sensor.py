@@ -42,7 +42,7 @@ def get_sensor_configs():
         vol.Optional(sensor_name): sensor.SENSOR_SCHEMA.extend({
             vol.Optional('unit_of_measurement'): cv.string,
             vol.Optional('icon'): cv.icon,
-            vol.Optional('accuracy_decimals'): cv.int,
+            vol.Optional('accuracy_decimals'): cv.positive_int,
             vol.Optional('device_class'): cv.string,
         }) for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items()
     })
