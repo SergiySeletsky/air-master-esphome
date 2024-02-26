@@ -11,9 +11,15 @@ void AirMasterSensor::update() {
   const uint8_t command[] = {0x55, 0xCD, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x69, 0x0D, 0x0A};
   this->write_array(command, sizeof(command));
 
-  uint8_t buffer[40];
   if (this->available() >= 40) {
-    this->read(buffer, 40);
+    uint8_t buffer[40];
+    int index = 0;
+    while (this->available() && index < 40) {
+        uint8_t byte;
+        if (this->read_byte(&byte)) {
+            buffer[index++] = byte;
+        }
+    }
 
     unsigned int received_checksum = buffer[37] | buffer[36] << 8;
     unsigned int calculated_checksum = 0;
