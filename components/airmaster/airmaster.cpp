@@ -10,10 +10,10 @@ namespace esphome
 
     void AirMasterSensor::update()
     {
-
       uint8_t response[AIRMASTER_RESPONSE_LENGTH];
+      uint8_t peeked;
 
-      while (this->available() >= 40)
+      while (this->available() > 0 && this->peek_byte(&peeked) && peeked != 170)
         this->read();
 
       bool read_success = read_array(response, AIRMASTER_RESPONSE_LENGTH);
