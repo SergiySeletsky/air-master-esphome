@@ -8,10 +8,8 @@
 namespace esphome {
 namespace airmaster {
 
-class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
+class AirMasterSensor : public PollingComponent, public uart::UARTDevice, output::BinaryOutput {
  public:
-  // Constructor with UART parent and LED Output
-  AirMasterSensor(uart::UARTComponent *parent, output::BinaryOutput *led_output) : uart::UARTDevice(parent), led_output(led_output) {}
 
   // Sensor pointers
   sensor::Sensor *pm25_sensor{nullptr};
