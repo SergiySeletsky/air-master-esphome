@@ -7,9 +7,14 @@ static const char *const TAG = "air_master";
 static const uint8_t AIRMASTER_RESPONSE_LENGTH = 40;
 
 void AirMasterSensor::update() {
+
+  // write request command
+  const uint8_t command[] = {0x55, 0xCD, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x69, 0x0D, 0x0A};
+  this->write_array(command, 13);
+
   uint8_t response[AIRMASTER_RESPONSE_LENGTH];
 
-  while (this->available() > 0)
+  while (this->available() >= 40)
     this->read();
 
   bool read_success = read_array(response, AIRMASTER_RESPONSE_LENGTH);
@@ -54,9 +59,7 @@ void AirMasterSensor::update() {
         ESP_LOGD(TAG, "Reading data...");
       }
 
-      // write request command
-      const uint8_t command[] = {0x55, 0xCD, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x69, 0x0D, 0x0A};
-      this->write_array(command, 13);
+      
 
   }
 }
