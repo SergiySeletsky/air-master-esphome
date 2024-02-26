@@ -10,11 +10,10 @@ void AirMasterSensor::setup() {
 void AirMasterSensor::update() {
   const uint8_t command[] = {0x55, 0xCD, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x69, 0x0D, 0x0A};
   this->write_array(command, sizeof(command));
-  this->delay(1000);  // Wait for sensor response
 
   uint8_t buffer[40];
   if (this->available() >= 40) {
-    this->read_bytes(buffer, 40);
+    this->read(buffer, 40);
 
     unsigned int received_checksum = buffer[37] | buffer[36] << 8;
     unsigned int calculated_checksum = 0;
@@ -45,17 +44,8 @@ void AirMasterSensor::update() {
                  
         // LED feedback for valid data
         led_output->turn_on();
-        delay(5000);
-        led_output->turn_off();
+        set_timeout(5000, [this]() { this->led_output->turn_off(); });
       } else {
-        // Checksum validation failed
-        for(int i = 0; i < 3; i++) {
-          led_output->turn_on();
-          delay(50);
-          led_output->turn_off();
-          delay(50);
-        }
-
         ESP_LOGD("air_master", "Reading data...");
       }
   }
