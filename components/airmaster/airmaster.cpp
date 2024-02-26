@@ -25,13 +25,13 @@ namespace esphome
 
       if (read_success)
       {
-
         unsigned int received_checksum = response[37] | response[36] << 8;
         unsigned int calculated_checksum = 0;
         for (int i = 0; i < 36; i++)
         {
           calculated_checksum += response[i];
         }
+        ESP_LOGD(TAG, "zero-byte= %d", response[0]);
         ESP_LOGD(TAG, "received_checksum= %d", received_checksum);
         ESP_LOGD(TAG, "calculated_checksum= %d", calculated_checksum);
         ESP_LOGD(TAG, "temp= %d", ((response[12] << 8) | response[11]) / 100.0);
