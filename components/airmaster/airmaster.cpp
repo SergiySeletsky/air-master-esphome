@@ -11,7 +11,7 @@ void AirMasterSensor::update() {
   uint8_t peeked;
 
   while (this->available() > 0 && this->peek_byte(&peeked))
-    this->read_byte();
+    this->read();
 
   bool read_success = read_array(response, AIRMASTER_RESPONSE_LENGTH);
 
