@@ -33,7 +33,6 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
   output::BinaryOutput *led_output;
 
   // Component overrides
-  void setup() override;
   void update() override;
 
   // Set sensor methods for each sensor
