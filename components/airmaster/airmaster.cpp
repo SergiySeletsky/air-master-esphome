@@ -4,7 +4,6 @@ namespace esphome
 {
   namespace airmaster
   {
-
     static const char *const TAG = "air_master";
     static const uint8_t AIRMASTER_RESPONSE_LENGTH = 40;
 
@@ -31,11 +30,8 @@ namespace esphome
         {
           calculated_checksum += response[i];
         }
-        ESP_LOGD(TAG, "zero-byte= %d", response[0]);
-        ESP_LOGD(TAG, "received_checksum= %d", received_checksum);
-        ESP_LOGD(TAG, "calculated_checksum= %d", calculated_checksum);
-        ESP_LOGD(TAG, "temp= %d", ((response[12] << 8) | response[11]) / 100.0);
-        if (received_checksum == calculated_checksum)
+
+        if (received_checksum == calculated_checksum && received_checksum != 243)
         {
           // Process and publish sensor data
           pm25_sensor->publish_state(response[2] | response[1] << 8);
@@ -55,7 +51,7 @@ namespace esphome
         }
         else
         {
-          ESP_LOGD(TAG, "Reading data...");
+          ESP_LOGI(TAG, "Reading data...");
         }
       }
 
