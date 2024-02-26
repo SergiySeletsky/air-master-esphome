@@ -1,0 +1,168 @@
+views:
+  - title: Home
+    cards:
+      - type: weather-forecast
+        entity: weather.forecast_home
+        forecast_type: daily
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            entity: sensor.air_master_temperature
+            name: Temperature
+            min: 15
+            max: 35
+            severity:
+              green: 15
+              yellow: 22
+              red: 26
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.air_master_temperature
+            stat_types:
+              - mean
+            hide_legend: false
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            entity: sensor.air_master_humidity
+            name: Humidity
+            min: 0
+            max: 100
+            severity:
+              red: 0
+              green: 40
+              yellow: 60
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.air_master_humidity
+            stat_types:
+              - mean
+            hide_legend: false
+      - type: entities
+        entities:
+          - entity: sensor.air_master_co2
+            name: CO2
+          - entity: sensor.air_master_hcho
+            name: HCHO
+          - entity: sensor.air_master_humidity
+            name: Humidity
+          - entity: sensor.air_master_pm10
+            name: PM10
+          - entity: sensor.air_master_pm2_5
+            name: PM2.5
+          - entity: sensor.air_master_ppm0_3
+            name: PPM0.3
+          - entity: sensor.air_master_ppm0_5
+            name: PPM0.5
+          - entity: sensor.air_master_ppm1_0
+            name: PPM1.0
+          - entity: sensor.air_master_ppm10
+            name: PPM10
+          - entity: sensor.air_master_ppm2_5
+            name: PPM2.5
+          - entity: sensor.air_master_ppm5_0
+            name: PPM5.0
+          - entity: sensor.air_master_temperature
+            name: Temperature
+          - entity: sensor.air_master_tvoc
+            name: TVOC
+        title: air_master
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            entity: sensor.air_master_co2
+            name: CO2
+            min: 400
+            max: 1500
+            severity:
+              green: 600
+              yellow: 800
+              red: 1000
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.air_master_co2
+            stat_types:
+              - mean
+            hide_legend: false
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            entity: sensor.air_master_hcho
+            name: Formaldehyde (HCHO)
+            min: 0
+            max: 200
+            severity:
+              green: 100
+              yellow: 120
+              red: 150
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.air_master_hcho
+            stat_types:
+              - mean
+            hide_legend: false
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            entity: sensor.air_master_tvoc
+            name: Volatile Organic Compounds (TVOC)
+            min: 0
+            max: 1000
+            severity:
+              green: 0
+              yellow: 250
+              red: 1000
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.air_master_tvoc
+            stat_types:
+              - mean
+            hide_legend: false
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            entity: sensor.air_master_pm2_5
+            name: PM2.5
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 12
+              red: 35
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.air_master_pm2_5
+            stat_types:
+              - mean
+            hide_legend: false
+      - type: vertical-stack
+        cards:
+          - type: gauge
+            entity: sensor.air_master_pm10
+            name: PM10
+            min: 0
+            max: 100
+            severity:
+              green: 0
+              yellow: 50
+              red: 80
+          - chart_type: line
+            period: hour
+            type: statistics-graph
+            entities:
+              - sensor.air_master_pm10
+            stat_types:
+              - mean
+            hide_legend: false
