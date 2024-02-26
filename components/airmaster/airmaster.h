@@ -2,7 +2,7 @@
 
 #include "esphome.h"
 #include "esphome/components/sensor/sensor.h"
-#include "esphome/components/output/output.h"
+#include "esphome/components/output/binary_output.h"
 #include "esphome/components/uart/uart.h"
 
 namespace esphome {
@@ -11,7 +11,7 @@ namespace airmaster {
 class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
  public:
   // Constructor with UART parent and LED Output
-  AirMasterSensor(uart::UARTComponent *parent, output::Output *led_output)
+  AirMasterSensor(uart::UARTComponent *parent, output::BinaryOutput *led_output)
       : uart::UARTDevice(parent), led_output_(led_output) {}
 
   // Sensor pointers
@@ -30,7 +30,7 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
   sensor::Sensor *ppm10_sensor{nullptr};
 
   // Output for LED indicator
-  output::Output *led_output_;
+  output::BinaryOutput *led_output_;
 
   // Component overrides
   void setup() override;

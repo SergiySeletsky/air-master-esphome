@@ -3,7 +3,7 @@
 namespace esphome {
 namespace airmaster {
 
-AirMasterSensor::AirMasterSensor(uart::UARTComponent *parent, output::Output *led_output) 
+AirMasterSensor::AirMasterSensor(uart::UARTComponent *parent, output::BinaryOutput *led_output) 
   : UARTDevice(parent), led_output(led_output) {}
 
 void AirMasterSensor::setup() {
