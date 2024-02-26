@@ -35,7 +35,7 @@ void AirMasterSensor::update() {
         ppm03_sensor->publish_state((buffer[20] << 8) | buffer[19]);
         ppm05_sensor->publish_state((buffer[22] << 8) | buffer[21]);
         ppm1_sensor->publish_state((buffer[24] << 8) | buffer[23]);
-        ppm2_sensor->publish_state((buffer[26] << 8) | buffer[25]);
+        ppm25_sensor->publish_state((buffer[26] << 8) | buffer[25]);
         ppm5_sensor->publish_state((buffer[28] << 8) | buffer[27]);
         ppm10_sensor->publish_state((buffer[30] << 8) | buffer[29]);
         

@@ -64,9 +64,10 @@ sensor:
       name: "PPM0.5"
     ppm1_sensor:
       name: "PPM1.0"
-    ppm2_sensor:
+    ppm25_sensor:
       name: "PPM2.5"
     ppm5_sensor:
       name: "PPM5.0"
     ppm10_sensor:
       name: "PPM10"
+    update_interval: 10s

@@ -21,7 +21,7 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
   sensor::Sensor *ppm03_sensor{nullptr};
   sensor::Sensor *ppm05_sensor{nullptr};
   sensor::Sensor *ppm1_sensor{nullptr};
-  sensor::Sensor *ppm2_sensor{nullptr};
+  sensor::Sensor *ppm25_sensor{nullptr};
   sensor::Sensor *ppm5_sensor{nullptr};
   sensor::Sensor *ppm10_sensor{nullptr};
 
@@ -39,7 +39,7 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
   void set_ppm03_sensor(sensor::Sensor *ppm03_sensor) { this->ppm03_sensor = ppm03_sensor; }
   void set_ppm05_sensor(sensor::Sensor *ppm05_sensor) { this->ppm05_sensor = ppm05_sensor; }
   void set_ppm1_sensor(sensor::Sensor *ppm1_sensor) { this->ppm1_sensor = ppm1_sensor; }
-  void set_ppm2_sensor(sensor::Sensor *ppm2_sensor) { this->ppm2_sensor = ppm2_sensor; }
+  void set_ppm25_sensor(sensor::Sensor *ppm25_sensor) { this->ppm25_sensor = ppm25_sensor; }
   void set_ppm5_sensor(sensor::Sensor *ppm5_sensor) { this->ppm5_sensor = ppm5_sensor; }
   void set_ppm10_sensor(sensor::Sensor *ppm10_sensor) { this->ppm10_sensor = ppm10_sensor; }
 
