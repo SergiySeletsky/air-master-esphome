@@ -2,7 +2,6 @@
 
 #include "esphome.h"
 #include "esphome/components/sensor/sensor.h"
-#include "esphome/components/output/binary_output.h"
 #include "esphome/components/uart/uart.h"
 
 namespace esphome {
@@ -43,7 +42,7 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
   void set_ppm2_sensor(sensor::Sensor *ppm2_sensor) { this->ppm2_sensor = ppm2_sensor; }
   void set_ppm5_sensor(sensor::Sensor *ppm5_sensor) { this->ppm5_sensor = ppm5_sensor; }
   void set_ppm10_sensor(sensor::Sensor *ppm10_sensor) { this->ppm10_sensor = ppm10_sensor; }
-  
+
 };
 
 }  // namespace airmaster
