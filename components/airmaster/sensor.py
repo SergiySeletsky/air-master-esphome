@@ -22,42 +22,104 @@ LED_OUTPUT_SCHEMA = vol.Schema({
     vol.Required(CONF_ID): core.ID,
 })
 
-SENSOR_TYPES = {
-    'pm25_sensor': [UNIT_MICROGRAMS_PER_CUBIC_METER, ICON_GAUGE, 2, DEVICE_CLASS_PM25],
-    'pm10_sensor': [UNIT_MICROGRAMS_PER_CUBIC_METER, ICON_GAUGE, 2, DEVICE_CLASS_PM10],
-    'hcho_sensor': [UNIT_MICROGRAMS_PER_CUBIC_METER, ICON_GAUGE, 2, None],
-    'tvoc_sensor': [UNIT_MICROGRAMS_PER_CUBIC_METER, ICON_GAUGE, 2, DEVICE_CLASS_VOLATILE_ORGANIC_COMPOUNDS],
-    'co2_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 2, DEVICE_CLASS_CARBON_DIOXIDE],
-    'temperature_sensor': [UNIT_CELSIUS, ICON_THERMOMETER, 2, DEVICE_CLASS_TEMPERATURE],
-    'humidity_sensor': [UNIT_PERCENT, ICON_WATER_PERCENT, 2, DEVICE_CLASS_HUMIDITY],
-    'ppm03_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, None],
-    'ppm05_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, None],
-    'ppm1_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, DEVICE_CLASS_PM1],
-    'ppm2_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, None],
-    'ppm5_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, None],
-    'ppm10_sensor': [UNIT_PARTS_PER_MILLION, ICON_GAUGE, 0, DEVICE_CLASS_PM10],
-}
-
-# Generate sensor configurations
-def get_sensor_configs():
-    sensor_configs = vol.Schema({
-        vol.Optional(sensor_name): sensor.SENSOR_SCHEMA.extend({
-            vol.Optional('unit_of_measurement'): cv.string,
-            vol.Optional('icon'): cv.icon,
-            vol.Optional('accuracy_decimals'): cv.positive_int,
-            vol.Optional('device_class'): cv.string,
-        }) for sensor_name, (unit, icon, decimals, device_class) in SENSOR_TYPES.items()
+CONFIG_SCHEMA = cv.All(
+    cv.Schema(
+        {
+            cv.GenerateID(): cv.declare_id(AirMasterSensor),
+            cv.Optional("pm25_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
+                icon=ICON_GRAIN,
+                accuracy_decimals=2,
+                device_class=DEVICE_CLASS_PM25,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("pm10_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
+                icon=ICON_GRAIN,
+                accuracy_decimals=2,
+                device_class=DEVICE_CLASS_PM10,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("hcho_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
+                icon=ICON_FLASK,
+                accuracy_decimals=2,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("tvoc_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_MICROGRAMS_PER_CUBIC_METER,
+                icon=ICON_CHEMICAL_WEAPON,
+                accuracy_decimals=2,
+                device_class=DEVICE_CLASS_VOLATILE_ORGANIC_COMPOUNDS,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("co2_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                icon=ICON_MOLECULE_CO2,
+                accuracy_decimals=2,
+                device_class=DEVICE_CLASS_CARBON_DIOXIDE,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("temperature_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_CELSIUS,
+                icon=ICON_THERMOMETER,
+                accuracy_decimals=2,
+                device_class=DEVICE_CLASS_TEMPERATURE,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("humidity_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_PERCENT,
+                icon=ICON_WATER_PERCENT,
+                accuracy_decimals=2,
+                device_class=DEVICE_CLASS_HUMIDITY,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            # ppm sensors
+            cv.Optional("ppm03_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                icon=ICON_GRAIN,
+                accuracy_decimals=0,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("ppm05_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                icon=ICON_GRAIN,
+                accuracy_decimals=0,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("ppm1_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                icon=ICON_GRAIN,
+                accuracy_decimals=0,
+                device_class=DEVICE_CLASS_PM1,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("ppm2_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                icon=ICON_GRAIN,
+                accuracy_decimals=0,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("ppm5_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                icon=ICON_GRAIN,
+                accuracy_decimals=0,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+            cv.Optional("ppm10_sensor"): sensor.sensor_schema(
+                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                icon=ICON_GRAIN,
+                accuracy_decimals=0,
+                device_class=DEVICE_CLASS_PM10,
+                state_class=STATE_CLASS_MEASUREMENT,
+            ),
+        }
+    )
+    .extend(cv.polling_component_schema("60s"))
+    .extend({
+        vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
     })
-    return sensor_configs
-
-sensor_configs = get_sensor_configs()
-
-CONFIG_SCHEMA = cv.Schema({
-    cv.GenerateID(): cv.declare_id(AirMasterSensor),
-}).extend({
-    vol.Optional(CONF_UPDATE_INTERVAL): cv.update_interval,
-    vol.Optional("led_output"): LED_OUTPUT_SCHEMA,
-}).extend(sensor_configs).extend(uart.UART_DEVICE_SCHEMA)
+    .extend(uart.UART_DEVICE_SCHEMA))
 
 def to_code(config):
     var = cg.new_Pvariable(config[CONF_ID])
