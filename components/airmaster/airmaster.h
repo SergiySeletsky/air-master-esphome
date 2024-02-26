@@ -30,7 +30,7 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
   sensor::Sensor *ppm10_sensor{nullptr};
 
   // Output for LED indicator
-  output::BinaryOutput *led_output_;
+  output::BinaryOutput *led_output;
 
   // Component overrides
   void setup() override;
