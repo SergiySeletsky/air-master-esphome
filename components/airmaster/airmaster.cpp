@@ -13,7 +13,9 @@ void AirMasterSensor::update() {
     while (this->available() && index < 40) {
         uint8_t byte;
         if (this->read_byte(&byte)) {
-            buffer[index++] = byte;
+          int i = index++;
+            ESP_LOGD("air_master", "index= %d", i);
+            buffer[i] = byte;
         }
     }
 
