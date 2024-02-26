@@ -13,7 +13,7 @@ namespace esphome
       uint8_t response[AIRMASTER_RESPONSE_LENGTH];
       uint8_t peeked;
 
-      while (this->available() > 40 && this->peek_byte(&peeked) && peeked != 170)
+      while (this->available() > 0 && this->peek_byte(&peeked) && peeked != 170)
         this->read();
 
       bool read_success = read_array(response, AIRMASTER_RESPONSE_LENGTH);
@@ -38,24 +38,20 @@ namespace esphome
         if (received_checksum == calculated_checksum)
         {
           // Process and publish sensor data
-          pm25_sensor->publish_state((response[2] << 8) | response[1]);
-          pm10_sensor->publish_state((response[4] << 8) | response[3]);
-          hcho_sensor->publish_state((response[6] << 8) | response[5]);
-          tvoc_sensor->publish_state((response[8] << 8) | response[7]);
-          co2_sensor->publish_state((response[10] << 8) | response[9]);
-          temperature_sensor->publish_state(((response[12] << 8) | response[11]) / 100.0);
-          humidity_sensor->publish_state(((response[14] << 8) | response[13]) / 100.0);
-          ppm03_sensor->publish_state((response[20] << 8) | response[19]);
-          ppm05_sensor->publish_state((response[22] << 8) | response[21]);
-          ppm1_sensor->publish_state((response[24] << 8) | response[23]);
-          ppm25_sensor->publish_state((response[26] << 8) | response[25]);
-          ppm5_sensor->publish_state((response[28] << 8) | response[27]);
-          ppm10_sensor->publish_state((response[30] << 8) | response[29]);
+          pm25_sensor->publish_state(buffer[2] | buffer[1] << 8);
+          pm10_sensor->publish_state(buffer[4] | buffer[3] << 8);
+          hcho_sensor->publish_state(buffer[6] | buffer[5] << 8);
+          tvoc_sensor->publish_state(buffer[8] | buffer[7] << 8);
+          co2_sensor->publish_state(buffer[10] | buffer[9] << 8);
+          temperature_sensor->publish_state((buffer[12] | buffer[11] << 8) / 100.0);
+          humidity_sensor->publish_state((buffer[14] | buffer[13] << 8) / 100.0);
 
-          ESP_LOGD(TAG, "Data received: PM2.5: %d, PM10: %d, HCHO: %d, TVOC: %d, CO2: %d, Temperature: %.2f, Humidity: %.2f, 0.3um: %d, 0.5um: %d, 1um: %d, 2.5um: %d, 5um: %d, 10um: %d",
-                   (response[2] << 8) | response[1], (response[4] << 8) | response[3], (response[6] << 8) | response[5], (response[8] << 8) | response[7], (response[10] << 8) | response[9],
-                   ((response[12] << 8) | response[11]) / 100.0, ((response[14] << 8) | response[13]) / 100.0, (response[20] << 8) | response[19], (response[22] << 8) | response[21],
-                   (response[24] << 8) | response[23], (response[26] << 8) | response[25], (response[28] << 8) | response[27], (response[30] << 8) | response[29]);
+          ppm03_sensor->publish_state(buffer[20] | buffer[19] << 8);
+          ppm05_sensor->publish_state(buffer[22] | buffer[21] << 8);
+          ppm1_sensor->publish_state(buffer[24] | buffer[23] << 8);
+          ppm25_sensor->publish_state(buffer[26] | buffer[25] << 8);
+          ppm5_sensor->publish_state(buffer[28] | buffer[27] << 8);
+          ppm10_sensor->publish_state(buffer[30] | buffer[29] << 8);
         }
         else
         {
