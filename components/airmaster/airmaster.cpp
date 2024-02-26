@@ -24,6 +24,7 @@ void AirMasterSensor::update() {
     }
     ESP_LOGD("air_master", "received_checksum= %d", received_checksum);
     ESP_LOGD("air_master", "calculated_checksum= %d", calculated_checksum);
+    ESP_LOGD("air_master", "temp= %d", ((buffer[12] << 8) | buffer[11]) / 100.0);
     if (received_checksum == calculated_checksum) {
         // Process and publish sensor data
         pm25_sensor->publish_state((buffer[2] << 8) | buffer[1]);
