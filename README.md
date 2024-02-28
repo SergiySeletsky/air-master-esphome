@@ -1,5 +1,7 @@
 # ESPHome AirMaster Sensor Component
 
+![image](https://github.com/SergiySeletsky/air-master-am7-esphome/assets/1207782/6cc0a264-de88-4611-bc83-6bea4b61ea04)
+
 ## Description
 This custom component for ESPHome enables integration with AirMaster sensors, providing detailed air quality measurements including PM2.5, PM10, HCHO, TVOC, CO2, temperature, humidity, and particle counts.
 
