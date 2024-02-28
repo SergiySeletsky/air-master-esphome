@@ -1,0 +1,124 @@
+views:
+  - title: Home
+    cards:
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: Temperature
+            entities:
+              - sensor.air_master_temperature
+            line_width: 8
+            font_size: 65
+            animate: true
+            smoothing: true
+            align_state: center
+            show:
+              icon_adaptive_color: true
+            color_thresholds:
+              - value: 15
+                color: blue
+              - value: 24
+                color: yellow
+              - value: 26
+                color: orange
+              - value: 27
+                color: red
+          - type: custom:mini-graph-card
+            name: Humidity
+            entities:
+              - sensor.air_master_humidity
+            line_width: 8
+            font_size: 65
+            animate: true
+            smoothing: true
+            align_state: center
+            show:
+              icon_adaptive_color: true
+            color_thresholds:
+              - value: 0
+                color: red
+              - value: 40
+                color: green
+              - value: 50
+                color: blue
+          - type: custom:mini-graph-card
+            name: CO2
+            entities:
+              - sensor.air_master_co2
+            line_width: 8
+            font_size: 65
+            animate: true
+            smoothing: true
+            align_state: center
+            show:
+              icon_adaptive_color: true
+            color_thresholds:
+              - value: 800
+                color: green
+              - value: 1000
+                color: yellow
+              - value: 1200
+                color: red
+      - type: horizontal-stack
+        cards:
+          - type: custom:mini-graph-card
+            name: HCHO
+            entities:
+              - sensor.air_master_hcho
+            line_width: 8
+            font_size: 65
+            animate: true
+            smoothing: true
+            align_state: center
+            show:
+              icon_adaptive_color: true
+            color_thresholds:
+              - value: 0
+                color: green
+              - value: 650
+                color: yellow
+              - value: 1000
+                color: orange
+              - value: 1500
+                color: red
+          - type: custom:mini-graph-card
+            name: PM2.5
+            entities:
+              - sensor.air_master_pm2_5
+            line_color: blue
+            line_width: 8
+            font_size: 65
+            animate: true
+            smoothing: true
+            align_state: center
+            show:
+              icon_adaptive_color: true
+            color_thresholds:
+              - value: 0
+                color: green
+              - value: 12
+                color: yellow
+              - value: 25
+                color: orange
+              - value: 35
+                color: red
+          - type: custom:mini-graph-card
+            name: PM10
+            entities:
+              - sensor.air_master_pm10
+            line_width: 8
+            font_size: 65
+            animate: true
+            smoothing: true
+            align_state: center
+            show:
+              icon_adaptive_color: true
+            color_thresholds:
+              - value: 0
+                color: green
+              - value: 25
+                color: yellow
+              - value: 50
+                color: orange
+              - value: 80
+                color: red
