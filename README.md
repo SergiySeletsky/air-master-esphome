@@ -15,3 +15,6 @@ Here is image where main UART located for communication with esp8266
 
 ## Hardware
 https://www.elecbee.com/en-24919-AM7-Plus-Indoor-Air-Quality-Detector-Meter-PM2-5-PM10-HCHO-TVOC-CO2-Temp-RH-Monitor-Laser-Gas-Sensor-Tester 
+
+## Known issues
+First power up esp8266 than connect UART and keep it powered from AirMaster, otherwise AirMaster interrupt boot sequence.
