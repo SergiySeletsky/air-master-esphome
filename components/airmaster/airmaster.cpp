@@ -33,6 +33,7 @@ namespace esphome
 
         if (received_checksum == calculated_checksum && received_checksum != 243)
         {
+          ESP_LOGW(TAG, "Check %d", received_checksum);
           // Process and publish sensor data
           pm25_sensor->publish_state(response[2] | response[1] << 8);
           pm10_sensor->publish_state(response[4] | response[3] << 8);
