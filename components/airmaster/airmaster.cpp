@@ -59,7 +59,7 @@ namespace esphome
           }
           
           unsigned int co2 = response[10] | response[9] << 8;
-          if (co2 < 5000) // 5000 max range of co2 meter
+          if (co2 > 350 && co2 < 5000) // from 350 to 5000 max range of co2 meter
           {
             co2_sensor->publish_state(co2);
           }
