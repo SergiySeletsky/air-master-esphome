@@ -58,7 +58,7 @@ namespace esphome
             tvoc_sensor->publish_state(response[8] | response[7] << 8);
           }
           
-          unsigned int co2 = response[10] | response[9] << 8
+          unsigned int co2 = response[10] | response[9] << 8;
           if (co2 < 5000) // 5000 max range of co2 meter
           {
             co2_sensor->publish_state(co2);
@@ -76,6 +76,7 @@ namespace esphome
             humidity_sensor->publish_state(humidity);
           }
 
+          // PPM counters
           unsigned int ppm03 = response[20] | response[19] << 8;
           if (ppm03 < 20000) // 20000 max range of ppm03 meter
           {
