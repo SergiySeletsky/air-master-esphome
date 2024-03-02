@@ -31,9 +31,8 @@ namespace esphome
           calculated_checksum += response[i];
         }
 
-        if (received_checksum == calculated_checksum && received_checksum != 243 && received_checksum != 680) // 243 and 680 are common checksums when the sensor is not connected
+        if (received_checksum == calculated_checksum && received_checksum != 243 && received_checksum != 244 && received_checksum != 680) // 243, 244 and 680 are common checksums when the sensor is not connected
         {
-          ESP_LOGW(TAG, "Check: %d", received_checksum);
           // Process and publish sensor data
           unsigned int pm25 = response[2] | response[1] << 8;
           if (pm25 < 999) // 999 max range of pm25 meter
