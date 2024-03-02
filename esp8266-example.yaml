@@ -37,7 +37,7 @@ uart:
 external_components:
   - source:
       type: git
-      url: https://github.com/SergiySeletsky/air-master-am7-esphome
+      url: https://github.com/SergiySeletsky/air-master-esphome
       ref: main
     components: [airmaster]
     refresh: 60s
