@@ -8,6 +8,8 @@ esp8266:
 
 # Enable logging
 logger:
+  baud_rate: 0
+  level: DEBUG
 
 # Enable Home Assistant API
 api:
@@ -30,8 +32,8 @@ captive_portal:
 
 uart:
   id: uart_bus
-  tx_pin: D8  # GPIO15
-  rx_pin: D7  # GPIO13
+  tx_pin: TX  # GPIO1
+  rx_pin: RX  # GPIO3
   baud_rate: 19200
 
 external_components:
