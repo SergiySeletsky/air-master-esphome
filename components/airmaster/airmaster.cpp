@@ -74,7 +74,7 @@ namespace esphome
             received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_3)
         {
           // Start index position
-          unsigned int index = 0;
+          unsigned int index = 1;
 
           // Process and publish sensor data
           extract_and_publish(response, pm25_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PM25);
