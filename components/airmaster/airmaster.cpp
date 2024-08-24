@@ -85,11 +85,12 @@ namespace esphome
           extract_and_publish(response, co2_sensor, index, MIN_CO2, MAX_CO2);
 
           extract_and_publish(response, temperature_sensor, index, MIN_TEMPERATURE, MAX_TEMPERATURE, 100.0);
+          ESP_LOGW(TAG, "humid %d", index);
           extract_and_publish(response, humidity_sensor, index, MIN_HUMIDITY, MAX_HUMIDITY, 100.0);
-
+          ESP_LOGW(TAG, "after humid %d", index);
           // Skip reserved bytes by incrementing the index
           index += 4; // Assuming 4 reserved bytes
-
+          ESP_LOGW(TAG, "after ++ %d", index);
           extract_and_publish(response, ppm03_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM03);
           extract_and_publish(response, ppm05_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM05);
           extract_and_publish(response, ppm1_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM1);
