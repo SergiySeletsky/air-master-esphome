@@ -1,12 +1,9 @@
 #include "airmaster.h"
-#include "esphome/components/sensor/sensor.h" // Include the correct header for the Sensor class
 
 namespace esphome
 {
   namespace airmaster
   {
-    using esphome::sensor::Sensor; // Ensure the Sensor class is properly referenced
-
     static const char *const TAG = "air_master";
     static const uint8_t AIRMASTER_RESPONSE_LENGTH = 40;
 
@@ -34,28 +31,9 @@ namespace esphome
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_2 = 244;
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_3 = 680;
 
-    // Define the structure for AirMaster data
-    struct AirMasterData {
-        uint16_t pm25;             // Particulate matter 2.5
-        uint16_t pm10;             // Particulate matter 10
-        uint16_t hcho;             // Formaldehyde concentration
-        uint16_t tvoc;             // Total Volatile Organic Compounds
-        uint16_t co2;              // Carbon Dioxide concentration
-        uint16_t temperature_raw;  // Raw temperature data (multiplied by 100)
-        uint16_t humidity_raw;     // Raw humidity data (multiplied by 100)
-        uint16_t ppm03;            // PPM 0.3
-        uint16_t ppm05;            // PPM 0.5
-        uint16_t ppm1;             // PPM 1.0
-        uint16_t ppm25;            // PPM 2.5
-        uint16_t ppm5;             // PPM 5.0
-        uint16_t ppm10;            // PPM 10.0
-        uint8_t reserved[4];       // Reserved bytes (could be padding or unused)
-        uint16_t checksum;         // Checksum for data validation
-    };
-
     void publish_if_within_limits(Sensor *sensor, unsigned int value, unsigned int min_limit, unsigned int max_limit)
     {
-        if (value >= min_limit && value < max_limit) sensor->publish_state(value);
+        if (value < max_limit) sensor->publish_state(value);
     }
 
     void publish_if_within_limits(Sensor *sensor, double value, double min_limit, double max_limit)
@@ -79,10 +57,7 @@ namespace esphome
         return; // Exit the function if read failed
       }
 
-      // Cast the response to the AirMasterData struct
-      const AirMasterData* data = reinterpret_cast<const AirMasterData*>(response);
-
-      unsigned int received_checksum = data->checksum;
+      unsigned int received_checksum = response[37] | response[36] << 8;
       unsigned int calculated_checksum = 0;
       for (int i = 0; i < 36; i++)
       {
@@ -99,24 +74,45 @@ namespace esphome
       }
 
       // Process and publish sensor data
-      publish_if_within_limits(pm25_sensor, data->pm25, MIN_SENSOR_LIMIT, MAX_PM25);
-      publish_if_within_limits(pm10_sensor, data->pm10, MIN_SENSOR_LIMIT, MAX_PM10);
-      publish_if_within_limits(hcho_sensor, data->hcho, MIN_SENSOR_LIMIT, MAX_HCHO);
-      publish_if_within_limits(tvoc_sensor, data->tvoc, MIN_SENSOR_LIMIT, MAX_TVOC);
-      publish_if_within_limits(co2_sensor, data->co2, MIN_CO2, MAX_CO2);
+      unsigned int pm25 = response[2] | response[1] << 8;
+      publish_if_within_limits(pm25_sensor, pm25, MIN_SENSOR_LIMIT, MAX_PM25);
 
-      double temperature = data->temperature_raw / 100.0;
+      unsigned int pm10 = response[4] | response[3] << 8;
+      publish_if_within_limits(pm10_sensor, pm10, MIN_SENSOR_LIMIT, MAX_PM10);
+
+      unsigned int hcho = response[6] | response[5] << 8;
+      publish_if_within_limits(hcho_sensor, hcho, MIN_SENSOR_LIMIT, MAX_HCHO);
+
+      unsigned int tvoc = response[8] | response[7] << 8;
+      publish_if_within_limits(tvoc_sensor, tvoc, MIN_SENSOR_LIMIT, MAX_TVOC);
+
+      unsigned int co2 = response[10] | response[9] << 8;
+      publish_if_within_limits(co2_sensor, co2, MIN_CO2, MAX_CO2);
+
+      double temperature = (response[12] | response[11] << 8) / 100.0;
       publish_if_within_limits(temperature_sensor, temperature, MIN_TEMPERATURE, MAX_TEMPERATURE);
 
-      double humidity = data->humidity_raw / 100.0;
+      double humidity = (response[14] | response[13] << 8) / 100.0;
       publish_if_within_limits(humidity_sensor, humidity, MIN_HUMIDITY, MAX_HUMIDITY);
 
-      publish_if_within_limits(ppm03_sensor, data->ppm03, MIN_SENSOR_LIMIT, MAX_PPM03);
-      publish_if_within_limits(ppm05_sensor, data->ppm05, MIN_SENSOR_LIMIT, MAX_PPM05);
-      publish_if_within_limits(ppm1_sensor, data->ppm1, MIN_SENSOR_LIMIT, MAX_PPM1);
-      publish_if_within_limits(ppm25_sensor, data->ppm25, MIN_SENSOR_LIMIT, MAX_PPM25);
-      publish_if_within_limits(ppm5_sensor, data->ppm5, MIN_SENSOR_LIMIT, MAX_PPM5);
-      publish_if_within_limits(ppm10_sensor, data->ppm10, MIN_SENSOR_LIMIT, MAX_PPM10);
+      // PPM counters
+      unsigned int ppm03 = response[20] | response[19] << 8;
+      publish_if_within_limits(ppm03_sensor, ppm03, MIN_SENSOR_LIMIT, MAX_PPM03);
+
+      unsigned int ppm05 = response[22] | response[21] << 8;
+      publish_if_within_limits(ppm05_sensor, ppm05, MIN_SENSOR_LIMIT, MAX_PPM05);
+
+      unsigned int ppm1 = response[24] | response[23] << 8;
+      publish_if_within_limits(ppm1_sensor, ppm1, MIN_SENSOR_LIMIT, MAX_PPM1);
+
+      unsigned int ppm25 = response[26] | response[25] << 8;
+      publish_if_within_limits(ppm25_sensor, ppm25, MIN_SENSOR_LIMIT, MAX_PPM25);
+
+      unsigned int ppm5 = response[28] | response[27] << 8;
+      publish_if_within_limits(ppm5_sensor, ppm5, MIN_SENSOR_LIMIT, MAX_PPM5);
+
+      unsigned int ppm10 = response[30] | response[29] << 8;
+      publish_if_within_limits(ppm10_sensor, ppm10, MIN_SENSOR_LIMIT, MAX_PPM10);
 
       // write request command
       const uint8_t command[] = {0x55, 0xCD, 0x47, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x69, 0x0D, 0x0A};
