@@ -1,4 +1,5 @@
 #include "airmaster.h"
+#include "esphome/components/sensor/sensor.h"
 
 namespace esphome
 {
