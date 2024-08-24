@@ -76,7 +76,7 @@ namespace esphome
 
       bool read_success = read_array(response, AIRMASTER_RESPONSE_LENGTH);
 
-      if (!read_success)
+      if (read_success)
       {
         // Cast the response to the AirMasterData struct
         const AirMasterData *data = reinterpret_cast<const AirMasterData *>(response);
