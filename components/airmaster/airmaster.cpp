@@ -88,7 +88,7 @@ namespace esphome
           extract_and_publish(response, humidity_sensor, index, MIN_HUMIDITY, MAX_HUMIDITY, 100.0);
 
           // Skip reserved bytes by incrementing the index
-          index += sizeof(uint8_t) * 5; // Assuming 5 reserved bytes
+          index += 4; // Assuming 4 reserved bytes
 
           extract_and_publish(response, ppm03_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM03);
           extract_and_publish(response, ppm05_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM05);
