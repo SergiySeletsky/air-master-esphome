@@ -43,6 +43,12 @@ class AirMasterSensor : public PollingComponent, public uart::UARTDevice {
   void set_ppm5_sensor(sensor::Sensor *ppm5_sensor) { this->ppm5_sensor = ppm5_sensor; }
   void set_ppm10_sensor(sensor::Sensor *ppm10_sensor) { this->ppm10_sensor = ppm10_sensor; }
 
+ private:
+  // Helper methods to extract and publish sensor data
+  void extract_and_publish(uint8_t *response, sensor::Sensor *sensor, unsigned int index, unsigned int min_limit, unsigned int max_limit);
+  void extract_and_publish_double(uint8_t *response, sensor::Sensor *sensor, unsigned int index, double min_limit, double max_limit);
+
+
 };
 
 }  // namespace airmaster
