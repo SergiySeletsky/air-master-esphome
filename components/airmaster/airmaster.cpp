@@ -35,8 +35,9 @@ namespace esphome
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_3 = 680;
 
     template <typename T>
-    void AirMasterSensor::extract_and_publish(uint8_t *response, Sensor *sensor, unsigned int &index, T min_limit, T max_limit, T scale)
+    void AirMasterSensor::extract_and_publish(uint8_t *response, Sensor *sensor, unsigned int &index, T min_limit, T max_limit)
     {
+      T scale = (std::is_same<T, double>::value) ? 100.0 : 1.0; // Scale factor for double type in x100
       T value = (response[index + 1] | (response[index] << 8)) / scale;
       if (value > min_limit && value < max_limit)
         sensor->publish_state(static_cast<float>(value));
@@ -82,8 +83,8 @@ namespace esphome
           extract_and_publish(response, hcho_sensor, index, MIN_SENSOR_LIMIT, MAX_HCHO);
           extract_and_publish(response, tvoc_sensor, index, MIN_SENSOR_LIMIT, MAX_TVOC);
           extract_and_publish(response, co2_sensor, index, MIN_CO2, MAX_CO2);
-          extract_and_publish(response, temperature_sensor, index, MIN_TEMPERATURE, MAX_TEMPERATURE, 100.0);
-          extract_and_publish(response, humidity_sensor, index, MIN_HUMIDITY, MAX_HUMIDITY, 100.0);
+          extract_and_publish(response, temperature_sensor, index, MIN_TEMPERATURE, MAX_TEMPERATURE);
+          extract_and_publish(response, humidity_sensor, index, MIN_HUMIDITY, MAX_HUMIDITY);
 
           // Skip reserved bytes by incrementing the index
           index += 4; // Assuming 4 reserved bytes
