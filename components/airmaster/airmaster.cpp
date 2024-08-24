@@ -35,11 +35,12 @@ namespace esphome
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_3 = 680;
 
     template <typename T>
-    void AirMasterSensor::extract_and_publish(uint8_t *response, Sensor *sensor, unsigned int index, T min_limit, T max_limit, T scale)
+    void AirMasterSensor::extract_and_publish(uint8_t *response, Sensor *sensor, unsigned int &index, T min_limit, T max_limit, T scale)
     {
       T value = (response[index + 1] | (response[index] << 8)) / scale;
       if (value > min_limit && value < max_limit)
         sensor->publish_state(static_cast<float>(value));
+      index += sizeof(uint16_t);
     }
 
     unsigned int AirMasterSensor::calculate_checksum(const uint8_t *response, unsigned int length)
@@ -77,46 +78,22 @@ namespace esphome
 
           // Process and publish sensor data using the template function with post-increment
           extract_and_publish(response, pm25_sensor, index, MIN_SENSOR_LIMIT, MAX_PM25);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, pm10_sensor, index, MIN_SENSOR_LIMIT, MAX_PM10);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, hcho_sensor, index, MIN_SENSOR_LIMIT, MAX_HCHO);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, tvoc_sensor, index, MIN_SENSOR_LIMIT, MAX_TVOC);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, co2_sensor, index, MIN_CO2, MAX_CO2);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, temperature_sensor, index, MIN_TEMPERATURE, MAX_TEMPERATURE, 100.0);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, humidity_sensor, index, MIN_HUMIDITY, MAX_HUMIDITY, 100.0);
-          index += sizeof(uint16_t);
 
           // Skip reserved bytes by incrementing the index
           index += 4; // Assuming 4 reserved bytes
 
           extract_and_publish(response, ppm03_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM03);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, ppm05_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM05);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, ppm1_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM1);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, ppm25_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM25);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, ppm5_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM5);
-          index += sizeof(uint16_t);
-
           extract_and_publish(response, ppm10_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM10);
-          index += sizeof(uint16_t);
         }
         else
         {
