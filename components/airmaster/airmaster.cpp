@@ -78,37 +78,37 @@ namespace esphome
 
           // PPM counters
           unsigned int ppm03 = response[20] | response[19] << 8;
-          if (ppm03 < 20000) // 20000 max range of ppm03 meter
+          if (ppm03 < 5000) // 5000 max range of ppm03 meter
           {
             ppm03_sensor->publish_state(ppm03);
           }
 
           unsigned int ppm05 = response[22] | response[21] << 8;
-          if (ppm05 < 10000) // 10000 max range of ppm05 meter
+          if (ppm05 < 2000) // 2000 max range of ppm05 meter
           {
             ppm05_sensor->publish_state(ppm05);
           }
 
           unsigned int ppm1 = response[24] | response[23] << 8;
-          if (ppm1 < 5000) // 5000 max range of ppm1 meter
+          if (ppm1 < 1000) // 1000 max range of ppm1 meter
           {
             ppm1_sensor->publish_state(ppm1);
           }
 
           unsigned int ppm25 = response[26] | response[25] << 8;
-          if (ppm25 < 2000) // 2000 max range of ppm25 meter
+          if (ppm25 < 100) // 100 max range of ppm25 meter
           {
             ppm25_sensor->publish_state(ppm25);
           }
 
           unsigned int ppm5 = response[28] | response[27] << 8;
-          if (ppm5 < 1000) // 1000 max range of ppm5 meter
+          if (ppm5 < 50) // 50 max range of ppm5 meter
           {
             ppm5_sensor->publish_state(ppm5);
           }
 
           unsigned int ppm10 = response[30] | response[29] << 8;
-          if (ppm10 < 500) // 500 max range of ppm10 meter
+          if (ppm10 < 25) // 25 max range of ppm10 meter
           {
             ppm10_sensor->publish_state(ppm10);
           }
