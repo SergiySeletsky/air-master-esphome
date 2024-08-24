@@ -49,18 +49,12 @@ namespace esphome
     static const unsigned int INDEX_PPM5 = 27;
     static const unsigned int INDEX_PPM10 = 29;
 
-    void AirMasterSensor::extract_and_publish(uint8_t *response, Sensor *sensor, unsigned int index, unsigned int min_limit, unsigned int max_limit)
+    template<typename T>
+    void AirMasterSensor::extract_and_publish(uint8_t *response, Sensor *sensor, unsigned int index, T min_limit, T max_limit, T scale)
     {
-      unsigned int value = response[index + 1] | (response[index] << 8);
-      if (value >= min_limit && value < max_limit)
-        sensor->publish_state(value);
-    }
-
-    void AirMasterSensor::extract_and_publish_double(uint8_t *response, Sensor *sensor, unsigned int index, double min_limit, double max_limit)
-    {
-      double value = (response[index + 1] | (response[index] << 8)) / 100.0;
+      T value = (response[index + 1] | (response[index] << 8)) / scale;
       if (value > min_limit && value < max_limit)
-        sensor->publish_state(value);
+        sensor->publish_state(static_cast<float>(value));
     }
 
     void AirMasterSensor::update()
@@ -88,15 +82,15 @@ namespace esphome
             received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_2 &&
             received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_3) // 243, 244, and 680 are common checksums when the sensor is not connected
         {
-          // Process and publish sensor data using helper functions
+          // Process and publish sensor data using the template function
           extract_and_publish(response, pm25_sensor, INDEX_PM25, MIN_SENSOR_LIMIT, MAX_PM25);
           extract_and_publish(response, pm10_sensor, INDEX_PM10, MIN_SENSOR_LIMIT, MAX_PM10);
           extract_and_publish(response, hcho_sensor, INDEX_HCHO, MIN_SENSOR_LIMIT, MAX_HCHO);
           extract_and_publish(response, tvoc_sensor, INDEX_TVOC, MIN_SENSOR_LIMIT, MAX_TVOC);
           extract_and_publish(response, co2_sensor, INDEX_CO2, MIN_CO2, MAX_CO2);
 
-          extract_and_publish_double(response, temperature_sensor, INDEX_TEMPERATURE, MIN_TEMPERATURE, MAX_TEMPERATURE);
-          extract_and_publish_double(response, humidity_sensor, INDEX_HUMIDITY, MIN_HUMIDITY, MAX_HUMIDITY);
+          extract_and_publish(response, temperature_sensor, INDEX_TEMPERATURE, MIN_TEMPERATURE, MAX_TEMPERATURE, 100.0);
+          extract_and_publish(response, humidity_sensor, INDEX_HUMIDITY, MIN_HUMIDITY, MAX_HUMIDITY, 100.0);
 
           extract_and_publish(response, ppm03_sensor, INDEX_PPM03, MIN_SENSOR_LIMIT, MAX_PPM03);
           extract_and_publish(response, ppm05_sensor, INDEX_PPM05, MIN_SENSOR_LIMIT, MAX_PPM05);
@@ -104,6 +98,7 @@ namespace esphome
           extract_and_publish(response, ppm25_sensor, INDEX_PPM25, MIN_SENSOR_LIMIT, MAX_PPM25);
           extract_and_publish(response, ppm5_sensor, INDEX_PPM5, MIN_SENSOR_LIMIT, MAX_PPM5);
           extract_and_publish(response, ppm10_sensor, INDEX_PPM10, MIN_SENSOR_LIMIT, MAX_PPM10);
+
         }
         else
         {
