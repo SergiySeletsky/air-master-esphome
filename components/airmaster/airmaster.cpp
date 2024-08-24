@@ -73,29 +73,50 @@ namespace esphome
             received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_2 &&
             received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_3)
         {
-          // Start index at the correct position for the first sensor value
           unsigned int index = 1;
 
-          // Process and publish sensor data using the template function
-          extract_and_publish(response, pm25_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PM25);
-          extract_and_publish(response, pm10_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PM10);
-          extract_and_publish(response, hcho_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_HCHO);
-          extract_and_publish(response, tvoc_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_TVOC);
-          extract_and_publish(response, co2_sensor, index += sizeof(uint16_t), MIN_CO2, MAX_CO2);
+          // Process and publish sensor data using the template function with post-increment
+          extract_and_publish(response, pm25_sensor, index, MIN_SENSOR_LIMIT, MAX_PM25);
+          index += sizeof(uint16_t);
 
-          extract_and_publish(response, temperature_sensor, index += sizeof(uint16_t), MIN_TEMPERATURE, MAX_TEMPERATURE, 100.0);
-          ESP_LOGW(TAG, "humid %d", index);
-          extract_and_publish(response, humidity_sensor, index += sizeof(uint16_t), MIN_HUMIDITY, MAX_HUMIDITY, 100.0);
-          ESP_LOGW(TAG, "after humid %d", index);
+          extract_and_publish(response, pm10_sensor, index, MIN_SENSOR_LIMIT, MAX_PM10);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, hcho_sensor, index, MIN_SENSOR_LIMIT, MAX_HCHO);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, tvoc_sensor, index, MIN_SENSOR_LIMIT, MAX_TVOC);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, co2_sensor, index, MIN_CO2, MAX_CO2);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, temperature_sensor, index, MIN_TEMPERATURE, MAX_TEMPERATURE, 100.0);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, humidity_sensor, index, MIN_HUMIDITY, MAX_HUMIDITY, 100.0);
+          index += sizeof(uint16_t);
+
           // Skip reserved bytes by incrementing the index
           index += 4; // Assuming 4 reserved bytes
-          ESP_LOGW(TAG, "after ++ %d", index);
-          extract_and_publish(response, ppm03_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PPM03);
-          extract_and_publish(response, ppm05_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PPM05);
-          extract_and_publish(response, ppm1_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PPM1);
-          extract_and_publish(response, ppm25_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PPM25);
-          extract_and_publish(response, ppm5_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PPM5);
-          extract_and_publish(response, ppm10_sensor, index += sizeof(uint16_t), MIN_SENSOR_LIMIT, MAX_PPM10);
+
+          extract_and_publish(response, ppm03_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM03);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, ppm05_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM05);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, ppm1_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM1);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, ppm25_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM25);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, ppm5_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM5);
+          index += sizeof(uint16_t);
+
+          extract_and_publish(response, ppm10_sensor, index, MIN_SENSOR_LIMIT, MAX_PPM10);
+          index += sizeof(uint16_t);
         }
         else
         {
