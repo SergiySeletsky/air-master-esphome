@@ -27,32 +27,11 @@ namespace esphome
     static const unsigned int MAX_PPM25 = 100;      // 100 max range of ppm25 meter
     static const unsigned int MAX_PPM5 = 50;        // 50 max range of ppm5 meter
     static const unsigned int MAX_PPM10 = 25;       // 25 max range of ppm10 meter
-    static const unsigned int MIN_SENSOR_LIMIT = 0; // 0 min range of sensor
 
     // Checksum constants
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_1 = 243;
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_2 = 244;
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_3 = 680;
-
-    // Define the structure for AirMaster data
-    struct AirMasterData
-    {
-      uint16_t pm25;            // Particulate matter 2.5
-      uint16_t pm10;            // Particulate matter 10
-      uint16_t hcho;            // Formaldehyde concentration
-      uint16_t tvoc;            // Total Volatile Organic Compounds
-      uint16_t co2;             // Carbon Dioxide concentration
-      uint16_t temperature_raw; // Raw temperature data (multiplied by 100)
-      uint16_t humidity_raw;    // Raw humidity data (multiplied by 100)
-      uint16_t ppm03;           // PPM 0.3
-      uint16_t ppm05;           // PPM 0.5
-      uint16_t ppm1;            // PPM 1.0
-      uint16_t ppm25;           // PPM 2.5
-      uint16_t ppm5;            // PPM 5.0
-      uint16_t ppm10;           // PPM 10.0
-      uint8_t reserved[4];      // Reserved bytes (could be padding or unused)
-      uint16_t checksum;        // Checksum for data validation
-    };
 
     void publish_if_within_limits(Sensor *sensor, unsigned int value, unsigned int min_limit, unsigned int max_limit)
     {
@@ -78,40 +57,59 @@ namespace esphome
 
       if (read_success)
       {
-        // Cast the response to the AirMasterData struct
-        const AirMasterData *data = reinterpret_cast<const AirMasterData *>(response);
-
-        unsigned int received_checksum = data->checksum;
+        // Calculate checksum manually
+        unsigned int received_checksum = response[37] | (response[36] << 8);
         unsigned int calculated_checksum = 0;
         for (int i = 0; i < 36; i++)
         {
           calculated_checksum += response[i];
         }
 
-        if (received_checksum == calculated_checksum
-        && received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_1
-        && received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_2
-        && received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_3) // 243, 244 and 680 are common checksums when the sensor is not connected
+        if (received_checksum == calculated_checksum &&
+            received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_1 &&
+            received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_2 &&
+            received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_3) // 243, 244, and 680 are common checksums when the sensor is not connected
         {
-          // Process and publish sensor data
-          publish_if_within_limits(pm25_sensor, data->pm25, MIN_SENSOR_LIMIT, MAX_PM25);
-          publish_if_within_limits(pm10_sensor, data->pm10, MIN_SENSOR_LIMIT, MAX_PM10);
-          publish_if_within_limits(hcho_sensor, data->hcho, MIN_SENSOR_LIMIT, MAX_HCHO);
-          publish_if_within_limits(tvoc_sensor, data->tvoc, MIN_SENSOR_LIMIT, MAX_TVOC);
-          publish_if_within_limits(co2_sensor, data->co2, MIN_CO2, MAX_CO2);
+          // Process and publish sensor data directly from response array
+          unsigned int pm25 = response[2] | (response[1] << 8);
+          if (pm25 < MAX_PM25) pm25_sensor->publish_state(pm25);
+          
 
-          double temperature = data->temperature_raw / 100.0;
-          publish_if_within_limits(temperature_sensor, temperature, MIN_TEMPERATURE, MAX_TEMPERATURE);
+          unsigned int pm10 = response[4] | (response[3] << 8);
+          if (pm10 < MAX_PM10) pm10_sensor->publish_state(pm10);
 
-          double humidity = data->humidity_raw / 100.0;
-          publish_if_within_limits(humidity_sensor, humidity, MIN_HUMIDITY, MAX_HUMIDITY);
+          unsigned int hcho = response[6] | (response[5] << 8);
+          if (hcho < MAX_HCHO) hcho_sensor->publish_state(hcho);
 
-          publish_if_within_limits(ppm03_sensor, data->ppm03, MIN_SENSOR_LIMIT, MAX_PPM03);
-          publish_if_within_limits(ppm05_sensor, data->ppm05, MIN_SENSOR_LIMIT, MAX_PPM05);
-          publish_if_within_limits(ppm1_sensor, data->ppm1, MIN_SENSOR_LIMIT, MAX_PPM1);
-          publish_if_within_limits(ppm25_sensor, data->ppm25, MIN_SENSOR_LIMIT, MAX_PPM25);
-          publish_if_within_limits(ppm5_sensor, data->ppm5, MIN_SENSOR_LIMIT, MAX_PPM5);
-          publish_if_within_limits(ppm10_sensor, data->ppm10, MIN_SENSOR_LIMIT, MAX_PPM10);
+          unsigned int tvoc = response[8] | (response[7] << 8);
+          if (tvoc < MAX_TVOC) tvoc_sensor->publish_state(tvoc);
+
+          unsigned int co2 = response[10] | (response[9] << 8);
+          if (co2 > MIN_CO2 && co2 < MAX_CO2) co2_sensor->publish_state(co2);
+
+          double temperature = (response[12] | (response[11] << 8)) / 100.0;
+          if (temperature > MIN_TEMPERATURE && temperature < MAX_TEMPERATURE) temperature_sensor->publish_state(temperature);
+
+          double humidity = (response[14] | (response[13] << 8)) / 100.0;
+          if (humidity > MIN_HUMIDITY && humidity < MAX_HUMIDITY) humidity_sensor->publish_state(humidity);
+
+          unsigned int ppm03 = response[20] | (response[19] << 8);
+          if (ppm03 < MAX_PPM03) ppm03_sensor->publish_state(ppm03);
+
+          unsigned int ppm05 = response[22] | (response[21] << 8);
+          if (ppm05 < MAX_PPM05) ppm05_sensor->publish_state(ppm05);
+
+          unsigned int ppm1 = response[24] | (response[23] << 8);
+          if (ppm1 < MAX_PPM1) ppm1_sensor->publish_state(ppm1);
+
+          unsigned int ppm25 = response[26] | (response[25] << 8);
+          if (ppm25 < MAX_PPM25) ppm25_sensor->publish_state(ppm25);
+
+          unsigned int ppm5 = response[28] | (response[27] << 8);
+          if (ppm5 < MAX_PPM5) ppm5_sensor->publish_state(ppm5);
+
+          unsigned int ppm10 = response[30] | (response[29] << 8);
+          if (ppm10 < MAX_PPM10) ppm10_sensor->publish_state(ppm10);
         }
         else
         {
