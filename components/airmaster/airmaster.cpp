@@ -27,6 +27,7 @@ namespace esphome
     static const unsigned int MAX_PPM25 = 100;
     static const unsigned int MAX_PPM5 = 50;
     static const unsigned int MAX_PPM10 = 25;
+    static const unsigned int MIN_SENSOR_LIMIT = 0;
 
     // Checksum constants
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_1 = 243;
