@@ -20,6 +20,7 @@ namespace esphome
       if (!read_success)
       {
         ESP_LOGW(TAG, "Reading data from AirMaster failed!");
+        return;
       }
 
       if (read_success)
