@@ -29,7 +29,7 @@ namespace esphome
     static const unsigned int MAX_PPM10 = 25;
     static const unsigned int MIN_SENSOR_LIMIT = 0;
 
-    // Checksum constants
+    // Checksum constants 243, 244, and 680 are common checksums when the sensor is not connected
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_1 = 243;
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_2 = 244;
     static const unsigned int CHECKSUM_SENSOR_NOT_CONNECTED_3 = 680;
@@ -49,12 +49,22 @@ namespace esphome
     static const unsigned int INDEX_PPM5 = 27;
     static const unsigned int INDEX_PPM10 = 29;
 
-    template<typename T>
+    template <typename T>
     void AirMasterSensor::extract_and_publish(uint8_t *response, Sensor *sensor, unsigned int index, T min_limit, T max_limit, T scale)
     {
       T value = (response[index + 1] | (response[index] << 8)) / scale;
       if (value > min_limit && value < max_limit)
         sensor->publish_state(static_cast<float>(value));
+    }
+
+    unsigned int AirMasterSensor::calculate_checksum(const uint8_t *response, unsigned int length)
+    {
+      unsigned int checksum = 0;
+      for (unsigned int i = 0; i < length; i++)
+      {
+        checksum += response[i];
+      }
+      return checksum;
     }
 
     void AirMasterSensor::update()
@@ -69,18 +79,14 @@ namespace esphome
 
       if (read_success)
       {
-        // Calculate checksum manually
+        // Calculate checksum
         unsigned int received_checksum = response[37] | (response[36] << 8);
-        unsigned int calculated_checksum = 0;
-        for (int i = 0; i < 36; i++)
-        {
-          calculated_checksum += response[i];
-        }
+        unsigned int calculated_checksum = calculate_checksum(response, 36);
 
         if (received_checksum == calculated_checksum &&
             received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_1 &&
             received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_2 &&
-            received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_3) // 243, 244, and 680 are common checksums when the sensor is not connected
+            received_checksum != CHECKSUM_SENSOR_NOT_CONNECTED_3)
         {
           // Process and publish sensor data using the template function
           extract_and_publish(response, pm25_sensor, INDEX_PM25, MIN_SENSOR_LIMIT, MAX_PM25);
@@ -98,7 +104,6 @@ namespace esphome
           extract_and_publish(response, ppm25_sensor, INDEX_PPM25, MIN_SENSOR_LIMIT, MAX_PPM25);
           extract_and_publish(response, ppm5_sensor, INDEX_PPM5, MIN_SENSOR_LIMIT, MAX_PPM5);
           extract_and_publish(response, ppm10_sensor, INDEX_PPM10, MIN_SENSOR_LIMIT, MAX_PPM10);
-
         }
         else
         {

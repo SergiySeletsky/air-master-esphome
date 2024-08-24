@@ -48,6 +48,8 @@ namespace esphome
       // Helper method to extract and publish sensor data (supports both unsigned int and double types)
       template <typename T>
       void extract_and_publish(uint8_t *response, sensor::Sensor *sensor, unsigned int index, T min_limit, T max_limit, T scale = 1.0);
+      // Checksum calculation function
+      unsigned int calculate_checksum(const uint8_t *response, unsigned int length);
     };
 
   } // namespace airmaster
