@@ -1,9 +1,12 @@
 #include "airmaster.h"
+#include "esphome/components/sensor/sensor.h" // Include the correct header for the Sensor class
 
 namespace esphome
 {
   namespace airmaster
   {
+    using esphome::sensor::Sensor; // Ensure the Sensor class is properly referenced
+
     static const char *const TAG = "air_master";
     static const uint8_t AIRMASTER_RESPONSE_LENGTH = 40;
 
