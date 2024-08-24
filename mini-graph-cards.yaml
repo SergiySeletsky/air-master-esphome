@@ -1,6 +1,16 @@
 views:
   - title: Home
     cards:
+      - type: weather-forecast
+        entity: weather.forecast_home
+        forecast_type: daily
+      - type: custom:hourly-weather
+        entity: weather.forecast_home
+        icons: true
+        show_wind: speed
+        show_precipitation_probability: true
+        show_precipitation_amounts: true
+        name: ' '
       - type: horizontal-stack
         cards:
           - type: custom:mini-graph-card
@@ -15,14 +25,18 @@ views:
             show:
               icon_adaptive_color: true
             color_thresholds:
-              - value: 15
-                color: blue
+              - value: 21.5
+                color: '#0000ff'
+              - value: 22
+                color: '#00ffff'
+              - value: 22.5
+                color: '#00ff00'
+              - value: 23
+                color: '#ffff00'
+              - value: 23.5
+                color: '#ff8800'
               - value: 24
-                color: yellow
-              - value: 26
-                color: orange
-              - value: 27
-                color: red
+                color: '#ff0000'
           - type: custom:mini-graph-card
             name: Humidity
             entities:
@@ -35,12 +49,18 @@ views:
             show:
               icon_adaptive_color: true
             color_thresholds:
-              - value: 0
-                color: red
-              - value: 40
-                color: green
-              - value: 50
-                color: blue
+              - value: 45
+                color: '#ff0000'
+              - value: 48
+                color: '#ff8800'
+              - value: 51
+                color: '#ffff00'
+              - value: 54
+                color: '#00ff00'
+              - value: 57
+                color: '#00ffff'
+              - value: 60
+                color: '#0000ff'
           - type: custom:mini-graph-card
             name: CO2
             entities:
@@ -53,12 +73,18 @@ views:
             show:
               icon_adaptive_color: true
             color_thresholds:
+              - value: 400
+                color: '#0000ff'
+              - value: 600
+                color: '#00ffff'
               - value: 800
-                color: green
+                color: '#00ff00'
               - value: 1000
-                color: yellow
+                color: '#ffff00'
               - value: 1200
-                color: red
+                color: '#ff8800'
+              - value: 1400
+                color: '#ff0000'
       - type: horizontal-stack
         cards:
           - type: custom:mini-graph-card
@@ -73,19 +99,22 @@ views:
             show:
               icon_adaptive_color: true
             color_thresholds:
-              - value: 0
-                color: green
-              - value: 650
-                color: yellow
-              - value: 1000
-                color: orange
-              - value: 1500
-                color: red
+              - value: 30
+                color: '#0000ff'
+              - value: 40
+                color: '#00ffff'
+              - value: 50
+                color: '#00ff00'
+              - value: 60
+                color: '#ffff00'
+              - value: 70
+                color: '#ff8800'
+              - value: 80
+                color: '#ff0000'
           - type: custom:mini-graph-card
             name: PM2.5
             entities:
               - sensor.air_master_pm2_5
-            line_color: blue
             line_width: 8
             font_size: 65
             animate: true
@@ -95,13 +124,17 @@ views:
               icon_adaptive_color: true
             color_thresholds:
               - value: 0
-                color: green
-              - value: 12
-                color: yellow
-              - value: 25
-                color: orange
-              - value: 35
-                color: red
+                color: '#0000ff'
+              - value: 10
+                color: '#00ffff'
+              - value: 20
+                color: '#00ff00'
+              - value: 30
+                color: '#ffff00'
+              - value: 40
+                color: '#ff8800'
+              - value: 50
+                color: '#ff0000'
           - type: custom:mini-graph-card
             name: PM10
             entities:
@@ -114,11 +147,15 @@ views:
             show:
               icon_adaptive_color: true
             color_thresholds:
-              - value: 0
-                color: green
-              - value: 25
-                color: yellow
+              - value: 10
+                color: '#0000ff'
+              - value: 20
+                color: '#00ffff'
+              - value: 30
+                color: '#00ff00'
+              - value: 40
+                color: '#ffff00'
               - value: 50
-                color: orange
-              - value: 80
-                color: red
+                color: '#ff8800'
+              - value: 60
+                color: '#ff0000'
