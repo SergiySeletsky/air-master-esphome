@@ -9,12 +9,14 @@ from esphome.const import (
     DEVICE_CLASS_TEMPERATURE, DEVICE_CLASS_HUMIDITY, UNIT_PARTS_PER_MILLION,
     UNIT_CELSIUS, UNIT_PERCENT, ICON_THERMOMETER, ICON_WATER_PERCENT,
     DEVICE_CLASS_PM10, DEVICE_CLASS_VOLATILE_ORGANIC_COMPOUNDS,
-    DEVICE_CLASS_CARBON_DIOXIDE, DEVICE_CLASS_PM1,
+    DEVICE_CLASS_CARBON_DIOXIDE,
     ICON_GRAIN, ICON_FLASK, ICON_CHEMICAL_WEAPON, ICON_MOLECULE_CO2,
     STATE_CLASS_MEASUREMENT,
 )
 
 DEPENDENCIES = ['uart']
+
+UNIT_PARTICLES_PER_0_1_L = "PCS/0.1L"
 
 airmaster_ns = cg.esphome_ns.namespace('airmaster')
 AirMasterSensor = airmaster_ns.class_('AirMasterSensor', cg.PollingComponent, uart.UARTDevice)
@@ -73,42 +75,39 @@ CONFIG_SCHEMA = cv.All(
             ),
             # ppm sensors
             cv.Optional("ppm03_sensor"): sensor.sensor_schema(
-                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                unit_of_measurement=UNIT_PARTICLES_PER_0_1_L,
                 icon=ICON_GRAIN,
                 accuracy_decimals=0,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
             cv.Optional("ppm05_sensor"): sensor.sensor_schema(
-                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                unit_of_measurement=UNIT_PARTICLES_PER_0_1_L,
                 icon=ICON_GRAIN,
                 accuracy_decimals=0,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
             cv.Optional("ppm1_sensor"): sensor.sensor_schema(
-                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                unit_of_measurement=UNIT_PARTICLES_PER_0_1_L,
                 icon=ICON_GRAIN,
                 accuracy_decimals=0,
-                device_class=DEVICE_CLASS_PM1,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
             cv.Optional("ppm25_sensor"): sensor.sensor_schema(
-                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                unit_of_measurement=UNIT_PARTICLES_PER_0_1_L,
                 icon=ICON_GRAIN,
                 accuracy_decimals=0,
-                device_class=DEVICE_CLASS_PM25,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
             cv.Optional("ppm5_sensor"): sensor.sensor_schema(
-                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                unit_of_measurement=UNIT_PARTICLES_PER_0_1_L,
                 icon=ICON_GRAIN,
                 accuracy_decimals=0,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
             cv.Optional("ppm10_sensor"): sensor.sensor_schema(
-                unit_of_measurement=UNIT_PARTS_PER_MILLION,
+                unit_of_measurement=UNIT_PARTICLES_PER_0_1_L,
                 icon=ICON_GRAIN,
                 accuracy_decimals=0,
-                device_class=DEVICE_CLASS_PM10,
                 state_class=STATE_CLASS_MEASUREMENT,
             ),
         }
